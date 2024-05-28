@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Graphs</title>
+    <style>
+
+        .navbar {
+            overflow: hidden;
+            background-color: #000; /* Change the background color to dark black */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure the navigation bar is above other elements */
+            display: flex;
+            justify-content: space-between; /* Align items to both ends */
+            align-items: center; /* Vertically center items */
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Add more custom styles as needed */
+
+        /* Add Dark Mode styles */
+        .dark-mode {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Add styles for graph container */
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 100px; /* Increased margin for space */
+        }
+
+        .graph {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .graph img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Dark/Light mode toggle button */
+        .mode-toggle {
+            margin-right: 20px;
+            color: #54FC60; /* Icon color */
+            cursor: pointer;
+        }
+
+        .mode-toggle i {
+            font-size: 24px;
+        }
+
+        /* Add your CSS styles here */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+
+        }
+
+        /* CSS for the banner container */
+        .banner-container {
+            width: 550px; /* Increased width */
+            height: 250px; /* Increased height */
+            overflow: hidden;
+            position: relative;
+            margin-right: 20px; /* Added margin for space */
+        }
+
+        /* CSS for the banner */
+        .banner {
+            display: flex;
+            height: 100%; /* Adjusted height to fill the container */
+            animation: scrollBanner 20s linear infinite; /* Adjust the animation duration as needed */
+        }
+
+        .banner img {
+            width: 550px; /* Each image occupies 100% of the width */
+            height: auto;
+            object-fit: cover; /* Ensure the image covers the entire space */
+        }
+         .carousel-item{
+         height: 400px;
+            width: 600px;
+         }
+        /* Keyframes for scrolling animation */
+        @keyframes scrollBanner {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); } /* Adjust the translateX value according to the number of images */
+        }
+        .carousel-item img {
+            width: 50px;
+            height: 550px; /* Adjust the height as needed */
+            object-fit: cover;
+        }
+
+        /* Justify text alignment for introduction paragraph */
+        .introduction p {
+            text-align: justify;
+        }
+        h1 {
+    padding : 20px 0 0 0;
+    color: #4CAF50; /* Text color */
+    text-align: center; /* Center the text */
+}
+
+h1 span {
+    background-color: #000; /* Background color for the text */
+    padding: 5px 10px; /* Adjust padding as needed */
+}
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" >Home</a>
+        <a href="about.html">About</a>
+
+        <a href="datasource.html">Data Sources</a>
+        <a href="graphs.html" class="active">Graphs</a>
+        <a href="predict.html">Predict</a>
+        <!-- Mode toggle button -->
+        <div class="mode-toggle" onclick="toggleDarkMode()">
+            <i id="mode-icon" class="fas fa-sun"></i>
+            <i id="mode-icon" class="fas fa-moon" style="display: none;"></i>
+        </div>
+    </div>
+    <br><br><br>
+    <!-- Histogram Graph -->
+        <h1><span><em>Graphs</em></span></h1>
+    <div>
+        <h2>Histogram</h2>
+        <img src="{{ histogram_depth_img }}" alt="Histogram Depth">
+        <p>Description of the depth histogram.</p>
+    </div>
+
+    <div>
+        <img src="{{ histogram_magnitude_img }}" alt="Histogram Magnitude">
+        <p>Description of the magnitude histogram.</p>
+    </div>
+
+    <!-- Scatter Plot Graph -->
+    <div>
+        <h2>Scatter Plot</h2>
+        <img src="{{ scatter_lat_lon_img }}" alt="Scatter Plot Latitude vs. Longitude">
+        <p>Description of the scatter plot for Latitude vs. Longitude.</p>
+    </div>
+
+    <div>
+        <img src="{{ scatter_depth_mag_img }}" alt="Scatter Plot Depth vs. Magnitude">
+        <p>Description of the scatter plot for Depth vs. Magnitude.</p>
+    </div>
+
+    <!-- Time Series Plot Graph -->
+    <div>
+        <h2>Time Series Plot</h2>
+        <img src="{{ time_series_mag_img }}" alt="Time Series Plot Magnitude over Time">
+        <p>Description of the time series plot for Magnitude over Time.</p>
+    </div>
+
+    <!-- Earthquakes per Year -->
+    <div>
+        <h2>Earthquakes per Year</h2>
+        <img src="{{ earthquakes_per_year_img }}" alt="Earthquakes per Year">
+        <p>Description of the number of earthquakes per year.</p>
+    </div>
+
+    <!-- Scatter Plot Latitude and Longitude with Depth and Magnitude -->
+    <div>
+        <h2>Latitude and Longitude with Depth and Magnitude</h2>
+        <img src="{{ scatter_lat_lon_depth_mag_img }}" alt="Scatter Plot Latitude and Longitude with Depth and Magnitude">
+        <p>Description of the scatter plot for Latitude and Longitude with Depth and Magnitude.</p>
+    </div>
+    <script>
+        function toggleDarkMode() {
+            var body = document.body;
+            var sunIcon = document.querySelector('.fa-sun');
+            var moonIcon = document.querySelector('.fa-moon');
+
+            body.classList.toggle('dark-mode');
+
+            // Toggle icon visibility and color
+            if (body.classList.contains('dark-mode')) {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'inline-block';
+            } else {
+                sunIcon.style.display = 'inline-block';
+                moonIcon.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

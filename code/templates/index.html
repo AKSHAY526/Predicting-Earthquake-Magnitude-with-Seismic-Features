@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+         /* Add your CSS styles here */
+         
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+        }
+        /* body{
+            background-image: url("https://img.freepik.com/premium-photo/crack-concrete-wall-texture-background_275805-583.jpg?w=996");
+        } */
+        .navbar {
+            overflow: hidden;
+            background-color: #000; /* Change the background color to dark black */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure the navigation bar is above other elements */
+            display: flex;
+            justify-content: space-between; /* Align items to both ends */
+            align-items: center; /* Vertically center items */
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Add more custom styles as needed */
+
+        /* Add Dark Mode styles */
+        .dark-mode {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Add styles for graph container */
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 100px; /* Increased margin for space */
+        }
+
+        .graph {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .graph img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Dark/Light mode toggle button */
+        .mode-toggle {
+            margin-right: 20px;
+            color: #54FC60; /* Icon color */
+            cursor: pointer;
+        }
+
+        .mode-toggle i {
+            font-size: 24px;
+        }
+
+        /* Add your CSS styles here */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+
+        }
+
+        /* CSS for the banner container */
+        .banner-container {
+            width: 550px; /* Increased width */
+            height: 250px; /* Increased height */
+            overflow: hidden;
+            position: relative;
+            margin-right: 20px; /* Added margin for space */
+        }
+
+        /* CSS for the banner */
+        .banner {
+            display: flex;
+            height: 100%; /* Adjusted height to fill the container */
+            animation: scrollBanner 20s linear infinite; /* Adjust the animation duration as needed */
+        }
+
+        .banner img {
+            width: 550px; /* Each image occupies 100% of the width */
+            height: auto;
+            object-fit: cover; /* Ensure the image covers the entire space */
+        }
+         .carousel-item{
+            height: 500px;
+            width: 600px;
+         }
+        /* Keyframes for scrolling animation */
+        @keyframes scrollBanner {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); } /* Adjust the translateX value according to the number of images */
+        }
+        .carousel-item img {
+            width: 50px;
+            height: 550px; /* Adjust the height as needed */
+            object-fit: cover;
+        }
+
+        /* Justify text alignment for introduction paragraph */
+        .introduction p {
+            text-align: justify;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="#" class="active">Home</a>
+        <a href="about.html">About</a>
+
+        <a href="datasource.html">Data Sources</a>
+        <a href="graphs.html">Graphs</a>
+        <a href="predict.html">Predict</a>
+        <!-- Mode toggle button -->
+        <div class="mode-toggle" onclick="toggleDarkMode()">
+            <i id="mode-icon" class="fas fa-sun"></i>
+            <i id="mode-icon" class="fas fa-moon" style="display: none;"></i>
+        </div>
+    </div>
+
+    <!-- Carousel and Introduction Section -->
+    <div class="container">
+        <!-- Carousel Column -->
+        <div class="col-md-6">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <!-- Carousel indicators -->
+                <ol class="carousel-indicators">
+                    <!-- Indicators here -->
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+                </ol>
+                <!-- Carousel inner content -->
+                <div class="carousel-inner">
+                    <!-- Carousel items here -->
+                    <div class="carousel-item active">
+                        <img src="https://getwallpapers.com/wallpaper/full/c/5/3/831021-full-size-earthquake-wallpapers-1920x1080-for-mobile.jpg" class="d-block w-100" alt="Slide 1">
+                        <!-- Adjust the caption as needed -->
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Seismic Magnitude Prediction</h5>
+                            <p>Predicting Earthquake Magnitudes with Seismic Features</p>
+                        </div>
+                    </div>
+                    <!-- Add more carousel items here -->
+                    <div class="carousel-item">
+                <img src="https://static01.nyt.com/images/2020/11/01/world/01turkey-quake-print1/25turkey-quake-videoSixteenByNine3000.jpg" class="d-block w-100" alt="Slide 2">
+                <!-- Adjust the caption as needed -->
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Seismic Magnitude Prediction</h5>
+                    <p>Predicting Earthquake Magnitudes with Seismic Features</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://static01.nyt.com/images/2021/09/22/world/22oz-earthquake/22oz-earthquake-facebookJumbo.jpg" class="d-block w-100" alt="Slide 3">
+                <!-- Adjust the caption as needed -->
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Seismic Magnitude Prediction</h5>
+                    <p>Predicting Earthquake Magnitudes with Seismic Features</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://cms.qz.com/wp-content/uploads/2015/05/nepal-earthquake1.jpg?quality=75&strip=all&w=1200&h=630&crop=1" class="d-block w-100" alt="Slide 4">
+                <!-- Adjust the caption as needed -->
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Seismic Magnitude Prediction</h5>
+                    <p>Predicting Earthquake Magnitudes with Seismic Features</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://static01.nyt.com/images/2015/04/25/world/asia/26EARTHQUAKE_HP_SS-slide-R83E/26EARTHQUAKE_HP_SS-slide-R83E-superJumbo.jpg" class="d-block w-100" alt="Slide 5">
+                <!-- Adjust the caption as needed -->
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Seismic Magnitude Prediction</h5>
+                    <p>Predicting Earthquake Magnitudes with Seismic Features</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://nypost.com/wp-content/uploads/sites/2/2020/10/201031-turkey-earthquake.jpg?quality=90&strip=all&w=1200" class="d-block w-100" alt="Slide 6">
+                <!-- Adjust the caption as needed -->
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Seismic Magnitude Prediction</h5>
+                    <p>Predicting Earthquake Magnitudes with Seismic Features</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://s.w-x.co/gettyimages-1171035293.jpg" class="d-block w-100" alt="Slide 7">
+                <!-- Adjust the caption as needed -->
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Seismic Magnitude Prediction</h5>
+                    <p>Predicting Earthquake Magnitudes with Seismic Features</p>
+                </div>
+            </div>
+
+                </div>
+                <!-- Carousel control buttons -->
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+        <!-- Introduction Column -->
+        <div class="col-md-6">
+            <div class="introduction">
+                <h2><center>Introduction</center></h2>
+                <p>
+                    This project aims to improve earthquake preparedness by integrating seismic data analysis with user-friendly visualization. It involves public awareness campaigns, community collaboration, and integration into disaster response plans. The system empowers individuals with timely warnings and educational resources, supporting emergency response efforts. Advantages include web-based accessibility, customizability, and integration of educational content. Proposed improvements include real-time data integration, machine learning for predictions, multilingual support, and accessibility features. Collaboration with local authorities enhances accuracy. A focus on a simple interface, interactivity, and education, ensures effectiveness. Ethical considerations stress transparency and responsible data privacy practices. Overall, this project aims to create a valuable tool for earthquake awareness and resilience.
+                </p>
+                <!-- Add more details about your project as needed -->
+            </div>
+        </div>
+
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript for Dark/Light Mode Toggle -->
+    <script>
+        function toggleDarkMode() {
+            var body = document.body;
+            var sunIcon = document.querySelector('.fa-sun');
+            var moonIcon = document.querySelector('.fa-moon');
+
+            body.classList.toggle('dark-mode');
+
+            // Toggle icon visibility and color
+            if (body.classList.contains('dark-mode')) {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'inline-block';
+            } else {
+                sunIcon.style.display = 'inline-block';
+                moonIcon.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

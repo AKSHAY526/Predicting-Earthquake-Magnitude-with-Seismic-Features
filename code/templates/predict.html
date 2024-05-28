@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Earthquake Magnitude Prediction</title>
+    <style>
+        body{
+            background-image: url("https://img.freepik.com/premium-photo/crack-concrete-wall-texture-background_275805-583.jpg?w=996");
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-weight: bolder;
+            font-size: 1rem;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #000000;
+            padding: 1%;
+            flex-direction: row; /* Changed to row */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            flex: 1; /* Added to take remaining space */
+        }
+
+        .box {
+            margin: 20px;
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            margin-left: 20px; /* Adjust as needed */
+            margin-bottom: 20px; /* Adjust as needed */
+        }
+
+        .value {
+            margin-bottom: 0.5rem;
+            background-color: #F5F5F5;
+        }
+
+        button {
+            padding: 6px;
+            color: #000000;
+            background-color: #54FC60;
+        }
+
+        .blink_text {
+            animation-name: blink;
+            animation-duration: 5s;
+            animation-timing-function: ease-in;
+            animation-iteration-count: Infinite;
+        }
+
+        @keyframes blink {
+            0% {
+                color: grey;
+            }
+
+            50% {
+                color: red;
+            }
+
+            100% {
+                color: red;
+            }
+        }
+
+        /* Add your existing CSS styles here */
+
+
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .form-row label {
+            flex: 1;
+            margin-right: 10px;
+            text-align: right;
+        }
+
+        .form-row input {
+            flex: 1;
+        }
+
+        .output {
+            margin-top: 20px; /* Adjust as needed */
+            text-align: center; /* Center the output */
+        }
+
+        /* Styling for the map container */
+        #map-container {
+            flex: 1; /* Added to take remaining space */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px; /* Adjust as needed */
+        }
+
+        #map {
+            height: 400px;
+            width: 600px;
+        }
+       .navbar {
+            overflow: hidden;
+            background-color: #000; /* Change the background color to dark black */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure the navigation bar is above other elements */
+            display: flex;
+            justify-content: space-between; /* Align items to both ends */
+            align-items: center; /* Vertically center items */
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Add more custom styles as needed */
+
+        /* Add Dark Mode styles */
+        .dark-mode {
+            background-color: #000;
+            color: #fff;
+        }
+         /* Dark/Light mode toggle button */
+        .mode-toggle {
+            margin-right: 20px;
+            color: #54FC60; /* Icon color */
+            cursor: pointer;
+        }
+
+        .mode-toggle i {
+            font-size: 24px;
+        }
+        h1 {
+    color: #4CAF50; /* Text color */
+    text-align: center; /* Center the text */
+    position: absolute; /* Position the element */
+    top: 90px; /* Adjust the top position to leave space below the navbar */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center horizontally */
+}
+
+
+    </style>
+</head>
+<body>
+<div class="navbar">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+        <a href="datasource.html">Data Sources</a>
+        <a href="graphs.html" >Graphs</a>
+        <a href="predict.html" class="active">Predict</a>
+        <div class="mode-toggle" onclick="toggleDarkMode()">
+            <i id="mode-icon" class="fas fa-sun"></i>
+            <i id="mode-icon" class="fas fa-moon" style="display: none;"></i>
+        </div>
+
+    </div>
+
+    <br><br><br>
+    <!-- Title for Predict page -->
+<!-- Title for Predict page -->
+<h1 style="background-color: #000; color: #4CAF50;"><em>Earthquake Magnitude Prediction</em></h1>
+
+
+
+
+    <!-- Map Container -->
+    <div id="map-container">
+
+        <div id="map"></div>
+    </div>
+
+    <div class="container">
+        <div class="box">
+
+
+            <!-- Form for Prediction -->
+            <form method="POST" action="/predict">
+                <!-- Latitude and Longitude Input Fields -->
+                <div class="form-row">
+                    <label for="latitude">Latitude:</label>
+                    <input step="any" class="value" type="number" id="latitude" name="latitude" placeholder="-90 to 90 degrees" required>
+
+                    <label for="longitude">Longitude:</label>
+                    <input step="any" class="value" type="number" id="longitude" name="longitude" placeholder="-180 to 180" required>
+                </div>
+
+                <!-- Other Input Fields -->
+                <div class="form-row">
+                    <label for="depth">Depth:</label>
+                    <input step="any" class="value" type="number" id="depth" name="depth" placeholder="0 to 700 kilometers" required>
+
+                    <label for="nst">Nst:</label>
+                    <input step="any" class="value" type="number" id="nst" name="nst" placeholder="0 to 100" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="gap">Gap:</label>
+                    <input step="any" class="value" type="number" id="gap" name="gap" placeholder="0 to 360" required>
+
+                    <label for="dmin">Dmin:</label>
+                    <input step="any" class="value" type="number" id="dmin" name="dmin" placeholder="0 to 100 KM" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="rms">RMS:</label>
+                    <input step="any" class="value" type="number" id="rms" name="rms" placeholder="0 to 2" required>
+
+                    <label for="horizontalError">Horizontal Error:</label>
+                    <input step="any" class="value" type="number" id="horizontalError" name="horizontalError" placeholder="0 to 100" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="depthError">Depth Error:</label>
+                    <input step="any" class="value" type="number" id="depthError" name="depthError" placeholder="0 to 100" required>
+
+                    <label for="magError">Magnitude Error:</label>
+                    <input step="any" class="value" type="number" id="magError" name="magError" placeholder="0 to 1" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="magNst">Mag Nst:</label>
+                    <input step="any" class="value" type="number" id="magNst" name="magNst" placeholder="0 to 100" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit">Predict</button>
+            </form>
+
+            {% if prediction %}
+                <div class="output">
+                    <h2 class="blink_text">{{ prediction }}</h2>
+                    <h3 class="blink_text">{{ effects }}</h3>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- JavaScript for Leaflet Map -->
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+ <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script>
+            // Add different map layers
+var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+});
+
+var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+var terrainLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data: © OpenTopoMap contributors'
+});
+
+// Initialize the map with satellite view
+var map = L.map('map', {
+    layers: [satelliteLayer] // Satellite layer added by default
+}).setView([0, 0], 2);
+
+// Add layer control
+var baseMaps = {
+    "Street Map": streetLayer,
+    "Satellite Map": satelliteLayer,
+    "Terrain Map": terrainLayer
+};
+
+L.control.layers(baseMaps).addTo(map);
+
+// Add search bar
+L.Control.geocoder().addTo(map);
+
+// Add marker on click
+var marker; // To store the marker instance
+map.on('click', function (e) {
+    var latLng = e.latlng;
+    var latitude = latLng.lat.toFixed(6);
+    var longitude = latLng.lng.toFixed(6);
+
+    // Update latitude and longitude input fields
+    document.getElementById('latitude').value = latitude;
+    document.getElementById('longitude').value = longitude;
+
+    // Remove previous marker, if any
+    if (marker) {
+        map.removeLayer(marker);
+    }
+
+    // Generate random values
+    var nst = Math.floor(Math.random() * 101); // Random integer between 0 and 100
+    var gap = Math.floor(Math.random() * 361); // Random integer between 0 and 360
+    var magNst = Math.floor(Math.random() * 101); // Random integer between 0 and 100
+    var dmin = (Math.random() * 100).toFixed(2); // Random float between 0 and 100 with 2 decimal places
+    var rms = (Math.random() * 2).toFixed(2); // Random float between 0 and 2 with 2 decimal places
+    var horizontalError = (Math.random() * 100).toFixed(2); // Random float between 0 and 100 with 2 decimal places
+    var depthError = (Math.random() * 100).toFixed(2); // Random float between 0 and 100 with 2 decimal places
+    var magError = (Math.random()).toFixed(2); // Random float between 0 and 1 with 2 decimal places
+
+    // Update input fields with random values
+    document.getElementById('nst').value = nst;
+    document.getElementById('gap').value = gap;
+    document.getElementById('magNst').value = magNst;
+    document.getElementById('dmin').value = dmin;
+    document.getElementById('rms').value = rms;
+    document.getElementById('horizontalError').value = horizontalError;
+    document.getElementById('depthError').value = depthError;
+    document.getElementById('magError').value = magError;
+
+    // Add a new marker at the clicked location
+    marker = L.marker([latitude, longitude]).addTo(map);
+});
+     function toggleDarkMode() {
+            var body = document.body;
+            var sunIcon = document.querySelector('.fa-sun');
+            var moonIcon = document.querySelector('.fa-moon');
+
+            body.classList.toggle('dark-mode');
+
+            // Toggle icon visibility and color
+            if (body.classList.contains('dark-mode')) {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'inline-block';
+            } else {
+                sunIcon.style.display = 'inline-block';
+                moonIcon.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

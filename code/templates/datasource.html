@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Earthquake Data</title>
+    <style>
+        /* Add your CSS styles for the earthquake data display here */
+        /* Example:
+        .earthquake {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        */
+
+       .earthquake-list {
+            list-style-type: none;
+            padding: 0;
+       }
+
+       .earthquake-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+       }
+        .title-box {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #000; /* Change the background color to dark black */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure the navigation bar is above other elements */
+            display: flex;
+            justify-content: space-between; /* Align items to both ends */
+            align-items: center; /* Vertically center items */
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Add more custom styles as needed */
+
+        /* Add Dark Mode styles */
+        .dark-mode {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Add styles for graph container */
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 100px; /* Increased margin for space */
+        }
+
+        .graph {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .graph img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Dark/Light mode toggle button */
+        .mode-toggle {
+            margin-right: 20px;
+            color: #54FC60; /* Icon color */
+            cursor: pointer;
+        }
+
+        .mode-toggle i {
+            font-size: 24px;
+        }
+
+        /* Add your CSS styles here */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+
+        }
+
+        /* CSS for the banner container */
+        .banner-container {
+            width: 550px; /* Increased width */
+            height: 250px; /* Increased height */
+            overflow: hidden;
+            position: relative;
+            margin-right: 20px; /* Added margin for space */
+        }
+
+        /* CSS for the banner */
+        .banner {
+            display: flex;
+            height: 100%; /* Adjusted height to fill the container */
+            animation: scrollBanner 20s linear infinite; /* Adjust the animation duration as needed */
+        }
+
+        .banner img {
+            width: 550px; /* Each image occupies 100% of the width */
+            height: auto;
+            object-fit: cover; /* Ensure the image covers the entire space */
+        }
+         .carousel-item{
+         height: 400px;
+            width: 600px;
+         }
+        /* Keyframes for scrolling animation */
+        @keyframes scrollBanner {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); } /* Adjust the translateX value according to the number of images */
+        }
+        .carousel-item img {
+            width: 50px;
+            height: 550px; /* Adjust the height as needed */
+            object-fit: cover;
+        }
+
+        /* Justify text alignment for introduction paragraph */
+        .introduction p {
+            text-align: justify;
+        }
+                h1 {
+    padding : 20px 0 0 0;
+    color: #4CAF50; /* Text color */
+    text-align: center; /* Center the text */
+}
+
+h1 span {
+    background-color: #000; /* Background color for the text */
+    padding: 5px 10px; /* Adjust padding as needed */
+}
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+
+        <a href="datasource.html" class="active">Data Sources</a>
+        <a href="graphs.html" >Graphs</a>
+        <a href="predict.html">Predict</a>
+        <!-- Mode toggle button -->
+        <div class="mode-toggle" onclick="toggleDarkMode()">
+            <i id="mode-icon" class="fas fa-sun"></i>
+            <i id="mode-icon" class="fas fa-moon" style="display: none;"></i>
+        </div>
+    </div>
+    <br><br><br>
+    <h1><span><em>Data Collection</em></span></h1>
+
+    <h2>Data collected from this website: <a href="https://earthquake.usgs.gov/earthquakes/search/" target="_blank">https://earthquake.usgs.gov/earthquakes/search/</a></h2>
+    <div class="title-box">
+        <h1 style="color: black">Live Data</h1>
+    </div>
+    <section id="earthquakeSection">
+        <select id="sortingOptions">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="largest">Largest Magnitude First</option>
+            <option value="smallest">Smallest Magnitude First</option>
+        </select>
+        <ul class="earthquake-list"></ul>
+    </section>
+    <script>
+        // Fetch earthquake data from the USGS API
+        fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson')
+            .then(response => response.json())
+            .then(data => {
+                // Process the fetched data and generate HTML content
+                const earthquakes = data.features;
+                const earthquakeList = document.querySelector('.earthquake-list');
+                const sortingOptions = document.getElementById('sortingOptions');
+
+                // Function to sort earthquakes based on selected option
+                const sortEarthquakes = () => {
+                    const selectedOption = sortingOptions.value;
+                    let sortedEarthquakes = [...earthquakes];
+
+                    switch (selectedOption) {
+                        case 'newest':
+                            sortedEarthquakes.sort((a, b) => b.properties.time - a.properties.time);
+                            break;
+                        case 'oldest':
+                            sortedEarthquakes.sort((a, b) => a.properties.time - b.properties.time);
+                            break;
+                        case 'largest':
+                            sortedEarthquakes.sort((a, b) => b.properties.mag - a.properties.mag);
+                            break;
+                        case 'smallest':
+                            sortedEarthquakes.sort((a, b) => a.properties.mag - b.properties.mag);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // Clear previous earthquake list
+                    earthquakeList.innerHTML = '';
+
+                    // Render sorted earthquakes
+                    sortedEarthquakes.forEach(earthquake => {
+                        const properties = earthquake.properties;
+                        const earthquakeHtml = `
+                            <li class="earthquake-item">
+                                <h3>${properties.place}</h3>
+                                <p><strong>Magnitude:</strong> ${properties.mag}</p>
+                                <p><strong>Date:</strong> ${new Date(properties.time).toDateString()}</p>
+                                <p><strong>Coordinates:</strong> ${earthquake.geometry.coordinates.join(', ')}</p>
+                            </li>
+                        `;
+                        earthquakeList.innerHTML += earthquakeHtml;
+                    });
+                };
+
+                // Initial sorting
+                sortEarthquakes();
+
+                // Add event listener for sorting options change
+                sortingOptions.addEventListener('change', sortEarthquakes);
+            })
+            .catch(error => {
+                console.error('Error fetching earthquake data:', error);
+            });
+    </script>
+    <script>
+        function toggleDarkMode() {
+            var body = document.body;
+            var sunIcon = document.querySelector('.fa-sun');
+            var moonIcon = document.querySelector('.fa-moon');
+
+            body.classList.toggle('dark-mode');
+
+            // Toggle icon visibility and color
+            if (body.classList.contains('dark-mode')) {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'inline-block';
+            } else {
+                sunIcon.style.display = 'inline-block';
+                moonIcon.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
